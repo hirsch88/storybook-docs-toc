@@ -1,5 +1,5 @@
 {
-  "name": "storybook-docs-toc",
+  "name": "hirsch-storybook-docs-toc",
   "version": "1.7.0",
   "description": "Table of contents addon for Storybook Docs",
   "main": "dist/index.js",

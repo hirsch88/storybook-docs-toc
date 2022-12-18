@@ -83,7 +83,7 @@ const NavHeader = styled.header.attrs({
 const defaultConfiguration = {
   tocSelector: ".js-toc",
   contentSelector: ".sbdocs-content",
-  headingSelector: ".sbdocs-h2",
+  headingSelector: ".sbdocs-h2,.sbdocs-h3",
 };
 
 type TableOfContentsProps = React.PropsWithChildren<{
