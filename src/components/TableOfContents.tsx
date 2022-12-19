@@ -2,88 +2,104 @@ import React from "react";
 import styled from "styled-components";
 import tocbot from "tocbot";
 
-const Nav = styled.nav.attrs({ className: "sbdocs sbdocs-toc" })`
-  --color: var(--toc-color, inherit);
-  --background: var(--toc-background, none);
-  --indicator-color: var(--toc-indicator-color, #f5f5f5);
-  --indicator-color--active: var(--toc-indicator-color--active, #0675c1);
+const Nav = styled.nav.attrs({ className: "sbdocs sbdocs-toc" })``;
 
-  display: none;
-  position: fixed;
-  top: 40px;
-  left: calc(50% + 500px + 20px);
-  padding: 10px;
-  width: 250px;
-  background: var(--background);
-  z-index: 9999;
-  transition: all 0.3s ease-in;
-
-  &[data-show="true"] {
-    display: inherit;
-  }
-
-  .toc-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .toc-link {
-    color: var(--color);
-    text-decoration: none;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-
-  .toc-list-item {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    padding: 0 10px;
-    cursor: pointer;
-
-    &:before {
-      position: absolute;
-      content: " ";
-      display: inline-block;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 3px;
-      background: var(--indicator-color);
-    }
-
-    &.is-active-li {
-      color: var(--indicator-color--active);
-
-      &:before {
-        background: var(--indicator-color--active);
-      }
-    }
-
-    .toc-list-item {
-      opacity: 0.54;
-
-      &:before {
-        content: none;
-      }
-    }
-  }
-`;
 
 const NavHeader = styled.header.attrs({
   className: "sbdocs sbdocs-toc__header",
-})`
-  font-weight: bold;
-  margin-bottom: 8px;
-`;
+})``;
 
 const defaultConfiguration = {
+  // Where to render the table of contents.
   tocSelector: ".js-toc",
+  // Where to grab the headings to build the table of contents.
   contentSelector: ".sbdocs-content",
-  headingSelector: ".sbdocs-h2,.sbdocs-h3",
+  // Which headings to grab inside of the contentSelector element.
+  headingSelector: ".sbdocs-h2, .sbdocs-h3",
+  // Headings that match the ignoreSelector will be skipped.
+  ignoreSelector: ".js-toc-ignore",
+  // For headings inside relative or absolute positioned containers within content
+  hasInnerContainers: false,
+  // Main class to add to links.
+  linkClass: "toc-link",
+  // Extra classes to add to links.
+  extraLinkClasses: "",
+  // Class to add to active links,
+  // the link corresponding to the top most heading on the page.
+  activeLinkClass: "is-active-link",
+  // Main class to add to lists.
+  listClass: "toc-list",
+  // Extra classes to add to lists.
+  extraListClasses: "",
+  // Class that gets added when a list should be collapsed.
+  isCollapsedClass: "is-collapsed",
+  // Class that gets added when a list should be able
+  // to be collapsed but isn't necessarily collapsed.
+  collapsibleClass: "is-collapsible",
+  // Class to add to list items.
+  listItemClass: "toc-list-item",
+  // Class to add to active list items.
+  activeListItemClass: "is-active-li",
+  // How many heading levels should not be collapsed.
+  // For example, number 6 will show everything since
+  // there are only 6 heading levels and number 0 will collapse them all.
+  // The sections that are hidden will open
+  // and close as you scroll to headings within them.
+  collapseDepth: 0,
+  // Smooth scrolling enabled.
+  scrollSmooth: true,
+  // Smooth scroll duration.
+  scrollSmoothDuration: 420,
+  // Smooth scroll offset.
+  scrollSmoothOffset: 0,
+  // Callback for scroll end.
+  // scrollEndCallback: function (e) {},
+  // Headings offset between the headings and the top of the document (this is meant for minor adjustments).
+  headingsOffset: 1,
+  // Timeout between events firing to make sure it's
+  // not too rapid (for performance reasons).
+  throttleTimeout: 50,
+  // Element to add the positionFixedClass to.
+  positionFixedSelector: null,
+  // Fixed position class to add to make sidebar fixed after scrolling
+  // down past the fixedSidebarOffset.
+  positionFixedClass: "is-position-fixed",
+  // fixedSidebarOffset can be any number but by default is set
+  // to auto which sets the fixedSidebarOffset to the sidebar
+  // element's offsetTop from the top of the document on init.
+  fixedSidebarOffset: "auto",
+  // includeHtml can be set to true to include the HTML markup from the
+  // heading node instead of just including the textContent.
+  includeHtml: false,
+  // onclick function to apply to all links in toc. will be called with
+  // the event as the first parameter, and this can be used to stop,
+  // propagation, prevent default or perform action
+  // onClick: function (e) {},
+  // orderedList can be set to false to generate unordered lists (ul)
+  // instead of ordered lists (ol)
+  orderedList: true,
+  // If there is a fixed article scroll container, set to calculate titles' offset
+  scrollContainer: null,
+  // prevent ToC DOM rendering if it's already rendered by an external system
+  skipRendering: false,
+  // Optional callback to change heading labels.
+  // For example it can be used to cut down and put ellipses on multiline headings you deem too long.
+  // Called each time a heading is parsed. Expects a string in return, the modified label to display.
+  // function (string) => string
+  headingLabelCallback: false,
+  // ignore headings that are hidden in DOM
+  ignoreHiddenElements: false,
+  // Optional callback to modify properties of parsed headings.
+  // The heading element is passed in node parameter and information parsed by default parser is provided in obj parameter.
+  // Function has to return the same or modified obj.
+  // The heading will be excluded from TOC if nothing is returned.
+  // function (object, HTMLElement) => object | void
+  headingObjectCallback: null,
+  // Set the base path, useful if you use a `base` tag in `head`.
+  basePath: "",
+  // Only takes affect when `tocSelector` is scrolling,
+  // keep the toc scroll position in sync with the content.
+  disableTocScrollSync: false,
 };
 
 type TableOfContentsProps = React.PropsWithChildren<{
@@ -94,7 +110,7 @@ type TableOfContentsProps = React.PropsWithChildren<{
 const TableOfContents = React.forwardRef(
   (
     {
-      title = "Table of contents",
+      title = "On this page",
       config = {},
       children,
       ...rest
@@ -102,6 +118,7 @@ const TableOfContents = React.forwardRef(
     ref: React.Ref<HTMLDivElement>
   ) => {
     const [headings, setHeadings] = React.useState<Element[]>([]);
+    const [subheadings, setSubheadings] = React.useState<Element[]>([]);
 
     const configuration = {
       ...defaultConfiguration,
@@ -109,15 +126,15 @@ const TableOfContents = React.forwardRef(
     };
 
     React.useEffect(() => {
-      const h2 = Array.from(
-        document.querySelectorAll(configuration.headingSelector)
-      );
+      const h2 = Array.from(document.querySelectorAll(".sbdocs-h2"));
+
+      const h3 = Array.from(document.querySelectorAll(".sbdocs-h3"));
 
       if (h2.length > 1) {
         setHeadings(h2);
-
+        setSubheadings(h3);
         tocbot.init({
-          ...configuration,
+          ...(configuration as any),
           onClick: (event) => {
             event.preventDefault();
             const hash = (event.target as HTMLAnchorElement).hash;
@@ -137,7 +154,12 @@ const TableOfContents = React.forwardRef(
     }, []);
 
     return (
-      <Nav {...rest} data-show={headings.length > 1} ref={ref}>
+      <Nav
+        {...rest}
+        data-show={headings.length > 1}
+        data-show-sub={subheadings.length > 1}
+        ref={ref}
+      >
         <NavHeader>{title}</NavHeader>
         <div className="js-toc"></div>
         {children}

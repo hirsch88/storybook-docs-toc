@@ -1,6 +1,6 @@
 import { BackToTop, DocsContainerHOC, TableOfContents } from "./components";
 
-const withTableOfContents = () => ({
+const withTableOfContents: any = () => ({
   docs: {
     container: DocsContainerHOC,
   },

@@ -1,20 +1,14 @@
 {
-  "include": [
-    "src/**/*",
-    ".storybook/**/*"
-  ],
+  "include": ["src/**/*", ".storybook/**/*"],
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": false,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "module": "esnext",
     "moduleResolution": "node",
+    "declaration": true,
     "jsx": "react"
   }
 }
