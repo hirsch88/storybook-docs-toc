@@ -133,9 +133,21 @@ const TableOfContents = React.forwardRef(
         (el) => !isHidden(el)
       );
 
+      Array.from(document.querySelectorAll(".sbdocs-h2"))
+        .filter(isHidden)
+        .forEach((el) => {
+          el.classList.add("js-toc-ignore");
+        });
+
       const h3 = Array.from(document.querySelectorAll(".sbdocs-h3")).filter(
         (el) => !isHidden(el)
       );
+
+      Array.from(document.querySelectorAll(".sbdocs-h3"))
+        .filter(isHidden)
+        .forEach((el) => {
+          el.classList.add("js-toc-ignore");
+        });
 
       if (h2.length > 1) {
         setHeadings(h2);
