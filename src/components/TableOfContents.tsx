@@ -4,7 +4,6 @@ import tocbot from "tocbot";
 
 const Nav = styled.nav.attrs({ className: "sbdocs sbdocs-toc" })``;
 
-
 const NavHeader = styled.header.attrs({
   className: "sbdocs sbdocs-toc__header",
 })``;
@@ -125,10 +124,18 @@ const TableOfContents = React.forwardRef(
       ...config,
     };
 
-    React.useEffect(() => {
-      const h2 = Array.from(document.querySelectorAll(".sbdocs-h2"));
+    function isHidden(el) {
+      return el.offsetParent === null;
+    }
 
-      const h3 = Array.from(document.querySelectorAll(".sbdocs-h3"));
+    React.useEffect(() => {
+      const h2 = Array.from(document.querySelectorAll(".sbdocs-h2")).filter(
+        (el) => !isHidden(el)
+      );
+
+      const h3 = Array.from(document.querySelectorAll(".sbdocs-h3")).filter(
+        (el) => !isHidden(el)
+      );
 
       if (h2.length > 1) {
         setHeadings(h2);
